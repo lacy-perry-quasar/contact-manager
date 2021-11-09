@@ -1,9 +1,15 @@
 package ContactsManagerCLI;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
+
+
 
 		boolean done = false;
 		int selection = 0;
@@ -25,27 +31,32 @@ public class Main {
 			selection = keyboard.nextInt();
 
 			// using nested if statements, determine what
-			// operation the user has selected (add, subtract,
-			// multiply, etc.)
+			// operation the user has selected
 			if (selection == 1) //view contacts
 			{
 
 				invalidChoice = false;
-			} else if (selection == 2) //subtract
+
+			} else if (selection == 2) //add a new contact
 			{
+				UpdateContacts.addContact();
 				invalidChoice = false;
-			} else if (selection == 3) //mulitply
+
+			} else if (selection == 3) //m
 			{
-				answer1 = number1 * number2;
+//				answer1 = number1 * number2;
 				invalidChoice = false;
+
 			} else if (selection == 4) //integar division
 			{
-				answer1 = number1 / number2;
+//				answer1 = number1 / number2;
 				invalidChoice = false;
+
 			} else if (selection == 5) //exit program
 			{
 				done = true;
 				invalidChoice = false;
+
 			} else    //invalid choice
 			{
 				invalidChoice = true;
@@ -58,14 +69,16 @@ public class Main {
 			// using nested if statements, determine
 			// the type of output to produce
 			if (selection == 5 && invalidChoice == false) {
-				System.out.println("\nCalculated answer is: " +
-						answer2);
+				System.out.println("\nCalculated answer is: ");
 			} else if (selection != 6 && invalidChoice == false) {
-				System.out.println("\nCalculated answer is: " +
-						answer1);
+				System.out.println("\nCalculated answer is: ");
 			} else {
 				System.out.println("\nNo calculation done.");
 			}
 		}    //end wile loop
+
+
+
 	}
+
 }

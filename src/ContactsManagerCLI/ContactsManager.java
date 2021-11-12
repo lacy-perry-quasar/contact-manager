@@ -81,6 +81,7 @@ public class ContactsManager {
         for (int i = 0; i < printList.size(); i++) {
 //            System.out.println((i + 1) + ": " + printList.get(i));
         }
+
         System.out.println(printList);
     }
 

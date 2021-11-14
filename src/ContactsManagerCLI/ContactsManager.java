@@ -1,11 +1,13 @@
 package ContactsManagerCLI;
 
+import javax.swing.text.MaskFormatter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -18,7 +20,7 @@ public class ContactsManager {
     public static Path dataDirectory = Paths.get(directory);
     public static Path contactsTxtPath = Paths.get(directory, filename);
 
-    public static void showMenu() throws IOException {
+    public static void showMenu() throws IOException, ParseException {
         Scanner keyboard = new Scanner(System.in);
         boolean done = false;
         int selection = 0;
@@ -33,52 +35,41 @@ public class ContactsManager {
         }
 
         while (!done) {
-        System.out.println("\nPlease select what you would like to do \n");
-        System.out.println("1 - View Contacts.");
-        System.out.println("2 - Add a new contact.");
-        System.out.println("3 - Search a contact by name.");
-        System.out.println("4 - Delete an existing contact.");
-        System.out.println("5 - exit\n");
+            System.out.println("\nPlease select what you would like to do \n");
+            System.out.println("1 - View Contacts.");
+            System.out.println("2 - Add a new contact.");
+            System.out.println("3 - Search a contact by name.");
+            System.out.println("4 - Delete an existing contact.");
+            System.out.println("5 - exit\n");
 
-        // read in from the keyboard what the user has entered
-        selection = keyboard.nextInt();
+            // read in from the keyboard what the user has entered
+            selection = keyboard.nextInt();
 
-        if (selection == 1) //view contacts
-        {
-            showContacts();
-            invalidChoice = false;
-        } else if (selection == 2)
-        {
-            addContact();
-            invalidChoice = false;
-        } else if (selection == 3)
-        {
+            if (selection == 1) //view contacts
+            {
+                showContacts();
+            } else if (selection == 2)
+            {
+                addContact();
+            } else if (selection == 3)
+            {
 
-            invalidChoice = false;
-        } else if (selection == 4)
-        {
-            deleteContact();
-            invalidChoice = false;
-        } else if (selection == 5) //exit program
-        {
-            done = true;
-            invalidChoice = false;
-        } else    //invalid choice
-        {
-            invalidChoice = true;
-            System.out.println("\n***ERROR*** " +
-                    selection +
-                    "is not a valid selection. " +
-                    "Please try again!");
+            } else if (selection == 4)
+            {
+                deleteContact();
+            } else if (selection == 5) //exit program
+            {
+                done = true;
+            } else    //invalid choice
+            {
+                invalidChoice = true;
+                System.out.println("\n***ERROR*** " + selection + "is not a valid selection. " + "Please try again!");
+            }
         }
-
-    }
-
-
     }
 
     public static void showContacts() throws IOException {
-
+        System.out.println("1 - View Contacts.");
         List<String> printList = Files.readAllLines(contactsTxtPath);
         System.out.println("Name | Phone number");
         System.out.println("--------------------");
@@ -89,15 +80,21 @@ public class ContactsManager {
 
     }
 
-    public static void addContact() throws IOException {
+    public static void addContact() throws IOException, ParseException {
         Scanner scanner = new Scanner(System.in);
-
+        System.out.println("2 - Add a new contact.");
         System.out.println("Enter your First name.");
         String firstName = scanner.nextLine();
+        firstName = firstName.replaceAll(" ","");
         System.out.println("Enter your Last name.");
         String lastName = scanner.nextLine();
-        System.out.println("Enter your phone number.");
+        lastName = lastName.replaceAll(" ", "");
+        System.out.println("Enter your phone number. No spaces or dashes");
+        String phoneMask = "###-###-####";
         String phone = scanner.nextLine();
+        MaskFormatter maskFormatter = new MaskFormatter(phoneMask);
+        maskFormatter.setValueContainsLiteralCharacters(false);
+        phone = maskFormatter.valueToString(phone);
         String contact = firstName + " " + lastName + " | " + phone;
 
         List<String> contactsList = Arrays.asList(contact);
@@ -106,6 +103,7 @@ public class ContactsManager {
     }
 
     public static void deleteContact() throws IOException {
+        System.out.println("4 - Delete an existing contact.");
         System.out.println("Which contact would you like to delete?");
         showContacts();
         Scanner scanner = new Scanner(System.in);

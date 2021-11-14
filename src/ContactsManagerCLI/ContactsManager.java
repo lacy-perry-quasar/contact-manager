@@ -35,7 +35,7 @@ public class ContactsManager {
         while (!done) {
         System.out.println("\nPlease select what you would like to do \n");
         System.out.println("1 - View Contacts.");
-        System.out.println("2 -  Add a new contact.");
+        System.out.println("2 - Add a new contact.");
         System.out.println("3 - Search a contact by name.");
         System.out.println("4 - Delete an existing contact.");
         System.out.println("5 - exit\n");
@@ -80,8 +80,10 @@ public class ContactsManager {
     public static void showContacts() throws IOException {
 
         List<String> printList = Files.readAllLines(contactsTxtPath);
-
+        System.out.println("Name | Phone number");
+        System.out.println("--------------------");
         for (int i = 0; i < printList.size(); i++) {
+
             System.out.println((i + 1) + ": " + printList.get(i));
         }
 

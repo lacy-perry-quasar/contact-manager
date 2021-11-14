@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class ContactsManager {
@@ -49,13 +51,13 @@ public class ContactsManager {
         {
             addContact();
             invalidChoice = false;
-        } else if (selection == 3) //mulitply
+        } else if (selection == 3)
         {
 
             invalidChoice = false;
-        } else if (selection == 4) //integar division
+        } else if (selection == 4)
         {
-
+            deleteContact();
             invalidChoice = false;
         } else if (selection == 5) //exit program
         {
@@ -78,11 +80,11 @@ public class ContactsManager {
     public static void showContacts() throws IOException {
 
         List<String> printList = Files.readAllLines(contactsTxtPath);
+
         for (int i = 0; i < printList.size(); i++) {
-//            System.out.println((i + 1) + ": " + printList.get(i));
+            System.out.println((i + 1) + ": " + printList.get(i));
         }
 
-        System.out.println(printList);
     }
 
     public static void addContact() throws IOException {
@@ -97,6 +99,23 @@ public class ContactsManager {
         String contact = firstName + " " + lastName + " | " + phone;
 
         List<String> contactsList = Arrays.asList(contact);
+        Files.write(contactsTxtPath, contactsList, StandardOpenOption.APPEND);
+
+    }
+
+    public static void deleteContact() throws IOException {
+        System.out.println("Which contact would you like to delete?");
+        showContacts();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please Enter A Full Name");
+        String deleteUser = scanner.nextLine();
+
+        List<String> printList = Files.readAllLines(contactsTxtPath);
+        printList.removeIf(c -> c.contains(deleteUser));
+
+        System.out.println("printList = " + printList);
+        System.out.println("You have deleted " + deleteUser + " from the contact list!" );
+        Files.write(contactsTxtPath, printList);
 
     }
 

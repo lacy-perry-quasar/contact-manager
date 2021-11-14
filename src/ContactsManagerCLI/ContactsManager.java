@@ -111,6 +111,7 @@ public class ContactsManager {
         String deleteUser = scanner.nextLine();
 
         List<String> printList = Files.readAllLines(contactsTxtPath);
+        https://www.baeldung.com/java-collection-remove-elements ~ removeIf()
         printList.removeIf(c -> c.contains(deleteUser));
 
         System.out.println("printList = " + printList);

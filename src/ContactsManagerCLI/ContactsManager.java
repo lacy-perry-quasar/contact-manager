@@ -1,7 +1,6 @@
 package ContactsManagerCLI;
 
 import javax.swing.text.MaskFormatter;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,7 +9,6 @@ import java.nio.file.StandardOpenOption;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class ContactsManager {
@@ -53,12 +51,13 @@ public class ContactsManager {
                 addContact();
             } else if (selection == 3)
             {
-
+                searchContact();
             } else if (selection == 4)
             {
                 deleteContact();
             } else if (selection == 5) //exit program
             {
+                System.out.println("Thanks for using contact manager.");
                 done = true;
             } else    //invalid choice
             {
@@ -68,8 +67,8 @@ public class ContactsManager {
         }
     }
 
+
     public static void showContacts() throws IOException {
-        System.out.println("1 - View Contacts.");
         List<String> printList = Files.readAllLines(contactsTxtPath);
         System.out.println("Name | Phone number");
         System.out.println("--------------------");
@@ -83,22 +82,29 @@ public class ContactsManager {
     public static void addContact() throws IOException, ParseException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("2 - Add a new contact.");
-        System.out.println("Enter your First name.");
-        String firstName = scanner.nextLine();
-        firstName = firstName.replaceAll(" ","");
-        System.out.println("Enter your Last name.");
-        String lastName = scanner.nextLine();
-        lastName = lastName.replaceAll(" ", "");
-        System.out.println("Enter your phone number. No spaces or dashes");
-        String phoneMask = "###-###-####";
-        String phone = scanner.nextLine();
-        MaskFormatter maskFormatter = new MaskFormatter(phoneMask);
-        maskFormatter.setValueContainsLiteralCharacters(false);
-        phone = maskFormatter.valueToString(phone);
-        String contact = firstName + " " + lastName + " | " + phone;
+        String firstName = "";
 
-        List<String> contactsList = Arrays.asList(contact);
-        Files.write(contactsTxtPath, contactsList, StandardOpenOption.APPEND);
+            System.out.println("Enter your First name.");
+            firstName = scanner.nextLine();
+            firstName = firstName.replaceAll(" ","");
+            System.out.println("Enter your Last name.");
+            String lastName = scanner.nextLine();
+            lastName = lastName.replaceAll(" ", "");
+            System.out.println("Enter your phone number. No spaces or dashes");
+            String phoneMask = "###-###-####";
+            String phone = scanner.nextLine();
+            MaskFormatter maskFormatter = new MaskFormatter(phoneMask);
+            maskFormatter.setValueContainsLiteralCharacters(false);
+            phone = maskFormatter.valueToString(phone);
+            String contact = firstName + " " + lastName + " | " + phone;
+            List<String> contactsList = Arrays.asList(contact);
+            Files.write(contactsTxtPath, contactsList, StandardOpenOption.APPEND);
+            showContacts();
+
+
+
+
+
 
     }
 
@@ -111,16 +117,34 @@ public class ContactsManager {
         String deleteUser = scanner.nextLine();
 
         List<String> printList = Files.readAllLines(contactsTxtPath);
+
         https://www.baeldung.com/java-collection-remove-elements ~ removeIf()
         printList.removeIf(c -> c.contains(deleteUser));
 
-        System.out.println("printList = " + printList);
+
         System.out.println("You have deleted " + deleteUser + " from the contact list!" );
         Files.write(contactsTxtPath, printList);
 
     }
 
+    public static void searchContact() throws IOException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("3 - Search a contact by name.");
+        System.out.println("Please Enter A Full Name");
+        String deleteUser = scanner.nextLine();
 
+        List<String> printList = Files.readAllLines(contactsTxtPath);
+
+        for (String contact : printList) {
+            if (contact.contains(deleteUser)) {
+                System.out.println("Name | Phone number");
+                System.out.println("--------------------");
+                System.out.println(contact);
+            }
+
+        }
+
+    }
 
 
 }

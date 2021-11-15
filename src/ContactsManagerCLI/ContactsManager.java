@@ -67,7 +67,6 @@ public class ContactsManager {
         }
     }
 
-
     public static void showContacts() throws IOException {
         List<String> printList = Files.readAllLines(contactsTxtPath);
         System.out.println("Name | Phone number");
@@ -145,6 +144,5 @@ public class ContactsManager {
         }
 
     }
-
 
 }
